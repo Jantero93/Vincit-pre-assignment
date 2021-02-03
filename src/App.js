@@ -5,14 +5,15 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Papa from "papaparse";
 import csvFile from "./HistoricalQuotes.csv";
+import FileReader from "./components/FileReader";
 
 export default class App extends Component {
   constructor() {
     super(); 
-    this.csvDataFromFile = this.csvDataFromFile.bind(this);
+   // this.csvDataFromFile = this.csvDataFromFile.bind(this);
 
     this.state = {
-      data: [],
+      data: null,
       download: false,
     };
   }
@@ -21,6 +22,7 @@ export default class App extends Component {
     this.csvDataFromFile(); 
   }
 
+  //käännä jsoniks vielä?
   csvDataFromFile(){
     Papa.parse(csvFile, {
       download: true,
@@ -49,17 +51,19 @@ export default class App extends Component {
             </ul>
           </nav>
 
+        <FileReader />
+
           <Switch>
             <Route path="/about">
-              <Exercise text={"about123"} />
+              <Exercise text={"about123"} data={this.data} />
             </Route>
 
             <Route path="/users">
-              <Exercise text={"users123"} />
+              <Exercise text={"users123"} data={this.data} />
             </Route>
 
             <Route path="/">
-              <Exercise text={"homse, grove street"} />
+              <Exercise text={"homse, grove street"} data={this.data} />
             </Route>
           </Switch>
         </Router>

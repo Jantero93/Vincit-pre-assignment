@@ -6,9 +6,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Papa from "papaparse";
 import csvFile from "./HistoricalQuotes.csv";
 
-const api_link =
-  "https://www.nasdaq.com/api/v1/historical/AAPL/stocks/2020-01-20/2021-01-20";
-
 export default class App extends Component {
   constructor() {
     super(); 

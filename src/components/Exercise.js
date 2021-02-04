@@ -4,7 +4,7 @@ export default class Exercise extends Component {
 
     render() {
         return (
-            <div>
+            <div className="exerciseComponent">
                 {this.props.text}
             </div>
         )

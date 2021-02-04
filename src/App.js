@@ -4,34 +4,39 @@ import "./Styles.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Papa from "papaparse";
-import csvFile from "./HistoricalQuotes.csv";
+//import csvFile from "./HistoricalQuotes.csv";
 import FileReader from "./components/FileReader";
 
 export default class App extends Component {
   constructor() {
     super(); 
    // this.csvDataFromFile = this.csvDataFromFile.bind(this);
+    this.handleLocalFile = this.handleLocalFile.bind(this);
+    this.updateData = this.updateData.bind(this);
 
     this.state = {
-      data: null,
-      download: false,
+      data: null      
     };
   }
 
-  componentDidMount() {
-    this.csvDataFromFile(); 
+  handleLocalFile = (file) => {     
+    Papa.parse(file, {
+        header: true,
+        complete: this.updateData            
+    });   
   }
 
-  //käännä jsoniks vielä?
-  csvDataFromFile(){
-    Papa.parse(csvFile, {
-      download: true,
-      complete: function (input) {
-        const records = input.data;
-        console.log(records);
-      },
-    });
-  }
+  updateData(results){
+    console.log("Finished:", results.data);
+            
+    this.setState({
+      data: results.data
+    })
+
+    console.log("state", this.state.data);
+ }
+  
+  
 
   render() {
     return (
@@ -51,7 +56,7 @@ export default class App extends Component {
             </ul>
           </nav>
 
-        <FileReader />
+        <FileReader handleLocalFile={this.handleLocalFile}/>
 
           <Switch>
             <Route path="/about">

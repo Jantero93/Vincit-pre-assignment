@@ -19,8 +19,8 @@ export default class App extends Component {
     };
   }
 
-  handleLocalFile = (file) => {
-    Papa.parse(file, {
+  handleLocalFile = (event) => {
+    Papa.parse(event.target.files[0], {
       header: true,
       complete: this.updateData,
     });
@@ -35,7 +35,7 @@ export default class App extends Component {
   }
 
   render() {
-    if (this.state.data === null) {
+    if (this.state.data !== null) {
       return (
         <div>
           <FileReader handleLocalFile={this.handleLocalFile} />

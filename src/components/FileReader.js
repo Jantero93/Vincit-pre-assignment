@@ -9,7 +9,7 @@ export default class FileReader extends Component {
         <input
           type="file"
           accept=".csv"
-          onChange={(e) => this.props.handleLocalFile(e.target.files[0])}
+          onChange={(e) => this.props.handleLocalFile(e)}
         />
       </div>
     );

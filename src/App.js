@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import Exercise from "./components/Exercise.js";
 import "./Styles.css";
 
-
 import Papa from "papaparse";
-//import csvFile from "./HistoricalQuotes.csv";
 import FileReader from "./components/FileReader";
 
 export default class App extends Component {
@@ -12,7 +10,7 @@ export default class App extends Component {
     super();
     // this.csvDataFromFile = this.csvDataFromFile.bind(this);
     this.handleLocalFile = this.handleLocalFile.bind(this);
-    this.updateData = this.updateData.bind(this);
+    this.formatData = this.formatData.bind(this);
 
     this.state = {
       data: null,
@@ -22,29 +20,29 @@ export default class App extends Component {
   handleLocalFile = (event) => {
     Papa.parse(event.target.files[0], {
       header: true,
-      complete: this.updateData,
+      delimiter: ", ",
+      complete: this.formatData,
     });
   };
 
-  updateData(results) {      
-  //  console.log("original",results.data);
-    // convert date MM/DD/YYYY to YYYY/MM/DD
-    const updated_data = results.data.map(oneCsvLine => this.convertDate(oneCsvLine));    
-  //  console.log("updated data from map",updated_data);
-    this.setState({data: updated_data});
+  formatData(results) {
+    //  console.log("original",results.data);
+
+    for (const csvLine of results.data) {
+      // convert date to Date object   
+      csvLine.Date = new Date(csvLine.Date);
+      //parse $ from strings
+      csvLine.High = csvLine.High.replace("$", "");
+      csvLine.Low = csvLine.Low.replace("$", "");
+      csvLine.Open = csvLine.Open.replace("$", "");
+      csvLine["Close/Last"] = csvLine["Close/Last"].replace("$", "");
+    }
+
+    //console.log("results data forin jälkeen", results.data);
+
+    this.setState({ data: results.data });
     console.log("this.state app js updated data", this.state);
-  }
-
-  convertDate(CsvLine){
-   // console.log("csv line before mapping",oldDate);
-    let dateParts = CsvLine.Date.split("/");
-   // console.log("date_parts",dateParts);
-    CsvLine.Date = dateParts[2] + "/" + dateParts[0] + "/" + dateParts[1]; 
-    return CsvLine;
-  }
-  
-
-  
+  }  
 
   render() {
     if (this.state.data === null) {

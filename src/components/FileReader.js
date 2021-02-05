@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Papa from "papaparse";
+
 
 export default class FileReader extends Component {
   

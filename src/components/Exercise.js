@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export default class Exercise extends Component {
   constructor(props) {
     super(props);
-   
+
     this.startDateChangeHandler = this.startDateChangeHandler.bind(this);
     this.endDateChangeHandler = this.endDateChangeHandler.bind(this);
     this.upwardTrend = this.upwardTrend.bind(this);
@@ -11,72 +11,108 @@ export default class Exercise extends Component {
     this.exerciseTwo_B_b = this.exerciseTwo_B_b.bind(this);
     this.exerciseThree = this.exerciseThree.bind(this);
 
-    this.state = {      
-      exercisesResult: null,     
+    this.state = {
+      exercisesResult: null,
       startDate: null,
-      endDate: null
+      endDate: null,
+      //invalidDate: false,
     };
   }
 
   startDateChangeHandler(event) {
- //   console.log("startDate",event.target.value);    
-    this.setState({startDate: event.target.value});
+    //   console.log("startDate",event.target.value);
+    this.setState({ startDate: new Date(event.target.value) });
+    //start day can't be before end date or before csv-files dates
+    /*
+    if (
+      this.state.startDate < this.props.data.Date ||
+      this.state.startDate > this.state.endDate
+    ) {
+      this.setState({ invalidDate: true });
+    } else {
+      this.setState({ invalidDate: false });
+    }
+    console.log("invalid startDate", this.state.invalidDate);
+    */
   }
 
   endDateChangeHandler(event) {
-  //    console.log("endDate", event.target.value);
-      this.setState({endDate: event.target.value});
+    //    console.log("endDate", event.target.value);
+    this.setState({ endDate: event.target.value });
   }
 
-  upwardTrend(){
-      console.log("click 2A");
+  upwardTrend() {
+    //for shorter variable name
+    const data = this.props.data;
+    //set clocks on .csv and local time on same so can <= and >= work correctly
+    const startDay = this.offSetTime(this.state.startDate);
+    const endDay = this.offSetTime(this.state.endDate);
+    
+    //filter days before start day and after end day
+    const result = data.filter(
+      (csvLine) => csvLine.Date >= startDay && csvLine.Date <= endDay
+    );
+    console.log("start", startDay);
+    console.log("end", endDay);
+    console.log(result);
   }
 
-  highestTradingVolume(){
-      console.log("click 2B a");
+  offSetTime(oldDate) {
+    var date = new Date(oldDate);
+    date.setHours(date.getHours()-2);
+    return date;
   }
 
-  exerciseTwo_B_b(){
-      console.log("click 2B b");
-  }
-  
-  exerciseThree(){
-      console.log("click 3");
+  highestTradingVolume() {
+    console.log("click 2B a");
   }
 
+  exerciseTwo_B_b() {
+    console.log("click 2B b");
+  }
+
+  exerciseThree() {
+    console.log("click 3");
+  }
 
   render() {
     console.log("exercise state", this.state);
-    console.log("exercise props",this.props);
+    //  console.log("exercise props", this.props);
 
     return (
       <div>
-       
-           <p>Starting date</p>
-           <input
-           type='date'
-           name='startDate'
-           onChange={this.startDateChangeHandler}
-           />
-           <br />
-           <p>Ending date</p>
-           <input
-           type='date'
-           name='endDate'
-           onChange={this.endDateChangeHandler}
-           />
-           <br />
-           <br />
-           <div className="buttonsDiv">
-            <button type="button" onClick={this.upwardTrend}>Longest upward trend</button>
-            <br/>
-            <button type="button" onClick={this.highestTradingVolume}>The highest trading volume</button>
-            <br/>
-            <button type="button" onClick={this.exerciseTwo_B_b}>Stock price change within day</button>
-            <br/>
-            <button type="button" onClick={this.exerciseThree}>SMA 5</button>
-           </div>
-       
+        <p>Starting date</p>
+        <input
+          type="date"
+          name="startDate"
+          onChange={this.startDateChangeHandler}
+        />
+        <br />
+        <p>Ending date</p>
+        <input
+          type="date"
+          name="endDate"
+          onChange={this.endDateChangeHandler}
+        />
+        <br />
+        <br />
+        <div className="buttonsDiv">
+          <button type="button" onClick={this.upwardTrend}>
+            Longest upward trend
+          </button>
+          <br />
+          <button type="button" onClick={this.highestTradingVolume}>
+            The highest trading volume
+          </button>
+          <br />
+          <button type="button" onClick={this.exerciseTwo_B_b}>
+            Stock price change within day
+          </button>
+          <br />
+          <button type="button" onClick={this.exerciseThree}>
+            SMA 5
+          </button>
+        </div>
       </div>
     );
   }

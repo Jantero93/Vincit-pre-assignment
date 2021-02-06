@@ -49,12 +49,36 @@ export default class Exercise extends Component {
     const endDay = this.offSetTime(this.state.endDate);
     
     //filter days before start day and after end day
-    const result = data.filter(
+    var result = data.filter(
       (csvLine) => csvLine.Date >= startDay && csvLine.Date <= endDay
     );
-    console.log("start", startDay);
-    console.log("end", endDay);
+    
+
+    //array begins with oldest date
+    result = result.reverse();
+    
+
+    var biggestStreak = 0;
+    var currentStreak = 1;
+
     console.log(result);
+
+    // comparing to next element
+    
+    for (var i = 0; i < result.length - 1; i++) {
+      // if next day bigger -> streak++
+      if (result[i]["Close/Last"] < result[i+1]["Close/Last"]) {
+        currentStreak++; if (currentStreak > biggestStreak) biggestStreak = currentStreak;
+        console.log("striik kasvo, päiväys, ", result[i].Date, "i: ", i);
+      }
+      else {
+        currentStreak = 1;
+      }
+    }
+
+    console.log(biggestStreak);
+    this.setState({exercisesResult: biggestStreak});
+    
   }
 
   offSetTime(oldDate) {
@@ -113,6 +137,8 @@ export default class Exercise extends Component {
             SMA 5
           </button>
         </div>
+        <br></br>
+        <div>Result: {this.state.exercisesResult}</div>
       </div>
     );
   }

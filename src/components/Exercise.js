@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import ShowResult from "./ShowResult.js";
 
 // showresult class renders exercises based on these consts
-const exercise1A = 0;
 const EXERCISE2A = 1;
-const exercise2B = 2;
-const exercose3C = 3; 
+const EXERCISE2B_A = 2;
+const EXERCISE2B_B = 3;
+const EXERCISE2C = 4;
 
 export default class Exercise extends Component {
   constructor(props) {
@@ -14,16 +14,18 @@ export default class Exercise extends Component {
     this.startDateChangeHandler = this.startDateChangeHandler.bind(this);
     this.endDateChangeHandler = this.endDateChangeHandler.bind(this);
     this.upwardTrend = this.upwardTrend.bind(this);
-    this.highestTradingVolume = this.highestTradingVolume.bind(this)
+    this.highestTradingVolume = this.highestTradingVolume.bind(this);
+    this.highestStockPriceChange = this.highestStockPriceChange.bind(this);
     this.SMA5 = this.SMA5.bind(this);
 
     this.state = {
       exerciseResult: null,
       exerciseNumber: null,
       startDate: null,
-      endDate: null     
+      endDate: null,
     };
   }
+
 
   startDateChangeHandler(event) {
     //   console.log("startDate",event.target.value);
@@ -123,79 +125,101 @@ export default class Exercise extends Component {
   }
 
   //cut out data outside time range and fixes browser times on same timezone
-  filterExceedingData(){
+  filterExceedingData() {
     //set clocktimes  on .csv and local time on same so <= and >= work correctly
     const startDay = this.offSetTime(this.state.startDate);
     const endDay = this.offSetTime(this.state.endDate);
 
     return this.props.data.filter(
       (csvLine) => csvLine.Date >= startDay && csvLine.Date <= endDay
-    );  
+    );
   }
 
   highestTradingVolume() {
-    console.log("click 2B a");   
+    console.log("click 2B a");
+    //data in date range
     const data = this.filterExceedingData();
 
-    var hiTradeingVolume = 0; //highest tradeing volume
-    var dateTradeVolume = 0; // date on highest tradeing volume
-    var hiValueChange = 0; // highest value change within day
-    var dateValueChange = 0; // date on highest value change within day
+    //sort by price change within day
+    data.sort(function (a, b) {
+      return b.Volume - a.Volume;
+    });
 
-    console.log("data: ",data)
-    //change wihin day difference on high and low prices 
-    for (const csvLine of data) {
-
-      if (Number(csvLine.Volume) > Number(hiTradeingVolume)) {
-        hiTradeingVolume = csvLine.Volume;
-        dateTradeVolume = csvLine.Date;
-      }
-
-      /*
-      console.log("korkein tradevolue:", hiTradeingVolume , 
-      "\n korkein volume date: ", dateTradeVolume,
-      "\n korkein arvomuutos: ", hiValueChange,
-      "\n date korkeimmalle muutokselle: ", dateValueChange);
-      */
-     
-
-      const difWihinDay = csvLine.High - csvLine.Low;
-      console.log("forloop: ", difWihinDay, "  ", csvLine.Date)
-      if (Number(hiValueChange) < Number(difWihinDay)) {
-        hiValueChange = difWihinDay;
-        dateValueChange = csvLine.Date;
-      }
-    }
-
-
-    console.log("lopullinen korkeis",hiTradeingVolume);
-    console.log("arvo muutos ja pvm: ", hiValueChange, "  ", dateValueChange);
     /*
-    pyöristä vielä arvomuutos ja vastausten palauttaminen jotenkin fiksusti?
+    for (let i = 0; i < data.length; i++){
+      console.log("muutos ", data[i].High - data[i].Low);
+    }
     */
-  } 
+
+    //map to data contain only date, volume and price change
+    const renderedData = data.map(function (dataLine) {
+      return {
+        date: dataLine.Date.toLocaleDateString("en-US"),
+        volume: dataLine.Volume,
+        // price change with two decimals
+        priceChange: (Number(dataLine.High) - Number(dataLine.Low)).toFixed(2),
+      };
+    });
+
+    //console.log("finaali data \n",renderedData)
+    this.setState({
+      exerciseResult: renderedData,
+      exerciseNumber: EXERCISE2B_A,
+    });
+    /*
+    for (let i = 0; i < renderedData.length; i++){
+      console.log(renderedData[i].volume);
+    }
+*/
+  }
+
+  highestStockPriceChange() {
+    console.log("click highest stock price change");
+
+    //data in date range
+    const data = this.filterExceedingData();
+
+    //sort by price change within day
+    data.sort(function (a, b) {
+      let difDayA = a.High - a.Low;
+      let difDayB = b.High - b.Low;
+      return difDayB - difDayA;
+    });
+
+    /*
+    for (let i = 0; i < data.length; i++){
+      console.log("muutos ", data[i].High - data[i].Low);
+    }
+    */
+
+    //map to data contain only date, volume and price change
+    const renderedData = data.map(function (dataLine) {
+      return {
+        date: dataLine.Date.toLocaleDateString("en-US"),
+        volume: dataLine.Volume,
+        // price change with two decimals
+        priceChange: (Number(dataLine.High) - Number(dataLine.Low)).toFixed(2),
+      };
+    });
+
+    //console.log("finaali data \n",renderedData)
+    this.setState({
+      exerciseResult: renderedData,
+      exerciseNumber: EXERCISE2B_B,
+    });
+  }
 
   SMA5() {
     console.log("click 3");
 
     var data = this.filterExceedingData();
-    data = data.reverse(); // oldest date first
 
-    for (var i = 0; i < data.length; i++) {
-
-      // if no five 
-      if (i - 5 < 0) {
-
-      }
-
-    }
-    this.setState({exerciseResult: <div>testi12345678</div>});
-
+    
   }
 
   render() {
     console.log("exercise state", this.state);
-    //  console.log("exercise props", this.props);    
+    //  console.log("exercise props", this.props);
 
     return (
       <div>
@@ -214,21 +238,31 @@ export default class Exercise extends Component {
         />
         <br />
         <br />
-        <div className="buttonsDiv">
+        <div className="buttonsDiv">       
           <button type="button" onClick={this.upwardTrend}>
             Longest upward trend
           </button>
           <br />
           <button type="button" onClick={this.highestTradingVolume}>
-            The highest trading volume
+            Ordered list by trading volume
           </button>
-          <br />         
+          <br />
+          <button type="button" onClick={this.highestStockPriceChange}>
+            Ordered list by price change
+          </button>
+          <br />
           <button type="button" onClick={this.SMA5}>
             SMA 5
           </button>
         </div>
         <br></br>
-       <div> <ShowResult result={this.state.exerciseResult} exerciseNumber={this.state.exerciseNumber} /> </div>
+        <div>
+          {" "}
+          <ShowResult
+            result={this.state.exerciseResult}
+            exerciseNumber={this.state.exerciseNumber}
+          />{" "}
+        </div>
       </div>
     );
   }

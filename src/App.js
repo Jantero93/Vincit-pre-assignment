@@ -49,7 +49,9 @@ export default class App extends Component {
       return (
         <div>
           <FileReader handleLocalFile={this.handleLocalFile} />
-          <p>Please add file</p>
+          <p>Please import CSV file, below link to download example file</p> 
+          <a href="https://www.nasdaq.com/api/v1/historical/AAPL/stocks/2020-01-20/2021-01-20">https://www.nasdaq.com/api/v1/historical/AAPL/stocks/2020-01-20/2021-01-20</a> 
+
         </div>
       );
     } else {

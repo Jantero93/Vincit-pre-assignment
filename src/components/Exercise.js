@@ -16,7 +16,7 @@ export default class Exercise extends Component {
     this.upwardTrend = this.upwardTrend.bind(this);
     this.highestTradingVolume = this.highestTradingVolume.bind(this);
     this.highestStockPriceChange = this.highestStockPriceChange.bind(this);
-    this.SMA5 = this.SMA5.bind(this);
+    this.simpleAVG = this.simpleAVG.bind(this);
 
     this.state = {
       exerciseResult: null,
@@ -46,7 +46,7 @@ export default class Exercise extends Component {
 
   endDateChangeHandler(event) {
     //    console.log("endDate", event.target.value);
-    this.setState({ endDate: event.target.value });
+    this.setState({ endDate: new Date(event.target.value) });
   }
 
   upwardTrend() {
@@ -129,8 +129,8 @@ export default class Exercise extends Component {
     //set clocktimes  on .csv and local time on same so <= and >= work correctly
     const startDay = this.offSetTime(this.state.startDate);
     const endDay = this.offSetTime(this.state.endDate);
-
-    return this.props.data.filter(
+    const data = this.props.data;
+    return data.filter(
       (csvLine) => csvLine.Date >= startDay && csvLine.Date <= endDay
     );
   }
@@ -202,20 +202,75 @@ export default class Exercise extends Component {
       };
     });
 
-    //console.log("finaali data \n",renderedData)
+    console.log("finaali data \n",renderedData)
     this.setState({
       exerciseResult: renderedData,
       exerciseNumber: EXERCISE2B_B,
     });
   }
 
-  SMA5() {
-    console.log("click 3");
 
-    var data = this.filterExceedingData();
+  simpleAVG() {
+/*
+KESKEN LOOP
+*/
+    let data = this.props.data;   
 
+    const filteredData = this.filterExceedingData();
+    const startDay = filteredData[0].Date;
+    const endDay = filteredData[filteredData.length-1].Date;
+
+    console.log("start ",startDay);
+    console.log("end day ",endDay);
+
+    //find indexes on original data
+    const startIndex = data.findIndex(csvLine => csvLine.Date === startDay);
+    const endIndex = data.findIndex(csvLine => csvLine.Date === endDay);
     
+    console.log("start index",startIndex)
+    console.log("endindex", endIndex);
+
+    // take 5 extra indexes to calc full sma 
+    data = data.slice(startIndex,endIndex+6);
+    console.log("newdata",data);
+
+    //newest dates first
+    //five last indexes only for calc
+    for (let i = 0; i < data.length-5; i++) {
+      console.log(i, " " , data[i].Date)
+      var simpleAVG = 0;
+      var totalSum = 0;
+      var count = 0;
+      //date, price change %, sma
+
+   //   console.log("loop date; ",data[i].Date)
+    
+
+      //calc sma
+      //higher index older dates
+      for (let j = i+1; j < i+6; j++) {
+    
+         //break if going out array      
+         if (data[j] ===undefined) {
+          break;
+        }
+
+        
+        console.log("j loop date ",data[j]["Close/Last"])
+        totalSum += Number(data[j]["Close/Last"]);
+     
+        //count how many numbers counted in total sum to calc avg
+        count++;       
+
+      }
+      simpleAVG = (Number(totalSum) / Number(count)).toFixed(2);
+      console.log("indeksin avg ",simpleAVG);
+    }
+
+   
+
   }
+
 
   render() {
     console.log("exercise state", this.state);
@@ -251,7 +306,7 @@ export default class Exercise extends Component {
             Ordered list by price change
           </button>
           <br />
-          <button type="button" onClick={this.SMA5}>
+          <button type="button" onClick={this.simpleAVG}>
             SMA 5
           </button>
         </div>

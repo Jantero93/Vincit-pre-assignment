@@ -9,8 +9,7 @@ export default class HighestTradingVolume extends Component {
     this.highestTradingVolume = this.highestTradingVolume.bind(this);
   }
 
-  componentDidUpdate(prevProps) { 
-  }
+  componentDidUpdate(prevProps) {}
 
   highestTradingVolume() {
     const data = this.props.data.filter(

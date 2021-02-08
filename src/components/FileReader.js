@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 
-
 export default class FileReader extends Component {
-  
   render() {
     return (
-      <div className="fileSelector">        
+      <div className="fileSelector">
         <input
           type="file"
           accept=".csv"

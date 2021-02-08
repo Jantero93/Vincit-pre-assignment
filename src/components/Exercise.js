@@ -143,7 +143,7 @@ export default class Exercise extends Component {
             checked={this.state.selectedOption === "First"}
           />
           <br></br>
-          <label>Highest trading Volume </label>
+          <label>Highest trading volume </label>
           <input
             type="radio"
             value="Second_A"

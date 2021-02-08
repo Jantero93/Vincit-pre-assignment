@@ -21,44 +21,37 @@ export default class App extends Component {
     Papa.parse(event.target.files[0], {
       header: true,
       delimiter: ", ",
+      skipEmptyLines: true,
       complete: this.formatData,
     });
   };
 
-  formatData(results) {
-    //  console.log("original",results.data);
-
-    for (const csvLine of results.data) {
-      // convert date to Date object   
-      csvLine.Date = new Date(csvLine.Date);
-      //parse $ from strings
+  formatData(results) {  
+    //make Date objects and format strings
+    for (const csvLine of results.data) {      
+      csvLine.Date = new Date(csvLine.Date); 
       csvLine.High = csvLine.High.replace("$", "");
       csvLine.Low = csvLine.Low.replace("$", "");
       csvLine.Open = csvLine.Open.replace("$", "");
       csvLine["Close/Last"] = csvLine["Close/Last"].replace("$", "");
     }
-
-    //console.log("results data forin jälkeen", results.data);
-
-    this.setState({ data: results.data });
-    console.log("this.state app js updated data", this.state);
+    this.setState({ data: results.data }); 
   }  
 
   render() {
     if (this.state.data === null) {
       return (
-        <div>
-          <FileReader handleLocalFile={this.handleLocalFile} />
+        <div className="frontPage">          
           <p>Please import CSV file, below link to download example file</p> 
           <a href="https://www.nasdaq.com/api/v1/historical/AAPL/stocks/2020-01-20/2021-01-20">https://www.nasdaq.com/api/v1/historical/AAPL/stocks/2020-01-20/2021-01-20</a> 
-
+          <FileReader handleLocalFile={this.handleLocalFile} />
         </div>
       );
     } else {
       return (
         <div>
           <FileReader handleLocalFile={this.handleLocalFile} />
-          <Exercise data={this.state.data} />
+          <Exercise data={this.state.data} />          
         </div>
       );
     }

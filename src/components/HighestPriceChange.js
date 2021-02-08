@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default class HighestPriceChange extends Component {
   constructor(props) {
     super(props);
-
     this.highestStockPriceChange = this.highestStockPriceChange.bind(this);
   }
 
@@ -62,8 +61,8 @@ export default class HighestPriceChange extends Component {
 
       const renderedData = data.map((csvLine, index) => (
         <tr key={index}>
-          <td>{csvLine.date}</td> 
-          <td> {csvLine.volume} </td>
+          <td>{csvLine.date}</td>
+          <td>{csvLine.volume}</td>
           <td>{csvLine.high}</td>
           <td>{csvLine.low}</td>
           <td>{csvLine.priceChange}</td>

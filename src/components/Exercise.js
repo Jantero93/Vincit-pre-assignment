@@ -76,7 +76,7 @@ export default class Exercise extends Component {
         );
 
       case "unedited":
-       const data = this.props.data.map((csvLine, index) => (
+        const data = this.props.data.map((csvLine, index) => (
           <tr key={index}>
             <td> {csvLine.Date.toLocaleDateString("en-US")} </td>
             <td> {csvLine["Close/Last"]} </td>
@@ -143,7 +143,7 @@ export default class Exercise extends Component {
             checked={this.state.selectedOption === "First"}
           />
           <br></br>
-          <label>Highest Trading Volume </label>
+          <label>Highest trading Volume </label>
           <input
             type="radio"
             value="Second_A"

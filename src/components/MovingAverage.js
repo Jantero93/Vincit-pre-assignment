@@ -7,13 +7,9 @@ export default class MovingAverage extends Component {
     super(props);
 
     this.movingAverage = this.movingAverage.bind(this);
-    
   }
 
-  componentDidUpdate(prevProps) {    
-  }
-
-
+  componentDidUpdate(prevProps) {}
 
   calcSMAforIndex(allData, i) {
     //push close/last prices array, calc sma
@@ -50,7 +46,7 @@ export default class MovingAverage extends Component {
     );
 
     // no data, return -1 for error
-    if (dataActualIdx.length <= 0) {   
+    if (dataActualIdx.length <= 0) {
       return -1;
     }
 
@@ -73,14 +69,13 @@ export default class MovingAverage extends Component {
 
     //slice doesn't include ending index on new array, 5 + 1
     const allData = this.props.data.slice(startIndex, endIndex + 6);
-   
+
     //store avgs on same index order
     var indexAVG = [];
     for (let i = 0; i < dataActualIdx.length; i++) {
       //calc sma on data ranges indexes individually
       //push on own array, order same as in dataActualIdx
       indexAVG.push(this.calcSMAforIndex(allData, i));
-
     }
 
     //calc procent change, if sma smaller procent is negative
@@ -95,17 +90,16 @@ export default class MovingAverage extends Component {
 
       let procentChange = (
         ((openPrice - indexAVG[i]) / indexAVG[i]) *
-        100).toFixed(2);
-
-
+        100
+      ).toFixed(2);
 
       objectList.push({
         date: dataActualIdx[i].Date.toLocaleDateString("en-US"),
         change: procentChange,
         openPrice: openPrice.toFixed(2),
-        SMA: indexAVG[i]
+        SMA: indexAVG[i],
       });
-    }    
+    }
 
     //sort by procentchange
     objectList.sort(function (a, b) {
@@ -135,7 +129,7 @@ export default class MovingAverage extends Component {
           <td>{csvLine.date}</td>
           <td>{csvLine.openPrice}</td>
           <td>{csvLine.SMA}</td>
-          <td>{csvLine.change + " %"}</td>         
+          <td>{csvLine.change + " %"}</td>
         </tr>
       ));
 
@@ -150,8 +144,6 @@ export default class MovingAverage extends Component {
                 <th>Open price</th>
                 <th>SMA 5 days</th>
                 <th>Open change from sma</th>
-                
-                
               </tr>
             </thead>
             <tbody>{renderedData}</tbody>

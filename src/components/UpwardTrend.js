@@ -8,7 +8,7 @@ const TEXT_THREE = " and ";
 export default class UpwardTrend extends Component {
   constructor(props) {
     super(props);
-    this.upwardTrend = this.upwardTrend.bind(this);   
+    this.upwardTrend = this.upwardTrend.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -48,7 +48,6 @@ export default class UpwardTrend extends Component {
           biggestStreak = currentStreak;
           //comparing to next one
           IndexEndOfStreak = i + 1;
-         
         }
       } else {
         currentStreak = 0;

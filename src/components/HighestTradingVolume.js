@@ -14,9 +14,6 @@ export default class HighestTradingVolume extends Component {
   highestTradingVolume() {
     //filter data from outside date range
 
-    console.log(this.props.data)
-    console.log(this.props.startDate)
-
     const data = this.props.data.filter(
       (csvLine) =>
         csvLine.Date >= this.props.startDate &&
@@ -55,7 +52,6 @@ export default class HighestTradingVolume extends Component {
       return <div className="upwardTrend">No data in date range</div>;
     }
 
-    //  console.log("data renderissä ", data);
     const renderedData = data.map((csvLine, index) => (
       <tr key={index}>
         <td>{csvLine.date}</td>

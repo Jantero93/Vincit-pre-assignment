@@ -5,12 +5,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default class HighestPriceChange extends Component {
   constructor(props) {
     super(props);
-    this.highestStockPriceChange = this.highestStockPriceChange.bind(this);
-    console.log("moroaaaaaa")
+    this.highestStockPriceChange = this.highestStockPriceChange.bind(this);    
   }
 
   componentDidUpdate(prevProps) {
-    //console.log(prevProps, this.props)
+  
   }
 
   highestStockPriceChange() {
@@ -20,7 +19,7 @@ export default class HighestPriceChange extends Component {
         csvLine.Date >= this.props.startDate &&
         csvLine.Date <= this.props.endDate
     );
-    
+
     // no data, return error
     if (data.length <= 0) {
       return -1;
@@ -66,7 +65,7 @@ export default class HighestPriceChange extends Component {
         <td>{csvLine.priceChange}</td>
       </tr>
     ));
-    console.log("rem",renderedData);
+    
     return (
       <div className="result">
         <h1>Sorted by price change</h1>

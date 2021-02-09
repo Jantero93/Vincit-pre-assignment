@@ -9,8 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default class Exercise extends Component {
   constructor(props) {
     super(props);
-
-    console.log(this.props.data)
+ 
     this.onValueChange = this.onValueChange.bind(this);
     this.startDateChangeHandler = this.startDateChangeHandler.bind(this);
     this.endDateChangeHandler = this.endDateChangeHandler.bind(this);
@@ -23,7 +22,6 @@ export default class Exercise extends Component {
   }
 
   onValueChange(event) {
-    console.log(event.target.value);
     this.setState({ selectedOption: event.target.value });
   }
 
@@ -49,7 +47,7 @@ export default class Exercise extends Component {
       this.props.data !== undefined
     ) {
       //data range valid
-      console.log("vrt",this.state.startDate <= this.state.endDate)
+    
       if (this.state.startDate <= this.state.endDate) {
         return true;
       }

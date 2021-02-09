@@ -199,7 +199,7 @@ export default class Exercise extends Component {
             this.validDataAndDates() ? (
               this.renderSwitch(this.state.selectedOption)
             ) : (
-              <div className="invalidDate">Invalid data range or no data</div>
+              <div className="invalidDate">Invalid date range or no data</div>
             )
           }
         </div>

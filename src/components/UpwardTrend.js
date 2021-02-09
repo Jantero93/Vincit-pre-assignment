@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./otherStyles.css";
 
 const TEXT_ONE = "Close/Last price increased ";
-const TEXT_TWO = " day(s) in a row between ";
+const TEXT_TWO = " days in a row between ";
 const TEXT_THREE = " and ";
 
 export default class UpwardTrend extends Component {

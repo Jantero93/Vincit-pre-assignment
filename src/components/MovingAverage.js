@@ -111,47 +111,38 @@ export default class MovingAverage extends Component {
   }
 
   render() {
-    //return on proper props
-    if (
-      this.props.endDate !== undefined &&
-      this.props.startDate !== undefined &&
-      this.props.data !== undefined
-    ) {
-      const data = this.movingAverage();
+    const data = this.movingAverage();
 
-      //no real data to return
-      if (data === -1) {
-        return <div className="upwardTrend">No data in date range</div>;
-      }
-
-      const renderedData = data.map((csvLine, index) => (
-        <tr key={index}>
-          <td>{csvLine.date}</td>
-          <td>{csvLine.openPrice}</td>
-          <td>{csvLine.SMA}</td>
-          <td>{csvLine.change + " %"}</td>
-        </tr>
-      ));
-
-      return (
-        <div className="result">
-          <h1>Open price change from 5 previous days sma</h1>
-          <h1>Sorted by price % change</h1>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Open price</th>
-                <th>SMA 5 days</th>
-                <th>Open change from sma</th>
-              </tr>
-            </thead>
-            <tbody>{renderedData}</tbody>
-          </Table>
-        </div>
-      );
-    } else {
-      return <div></div>;
+    //no real data to map
+    if (data === -1) {
+      return <div className="upwardTrend">No data in date range</div>;
     }
+
+    const renderedData = data.map((csvLine, index) => (
+      <tr key={index}>
+        <td>{csvLine.date}</td>
+        <td>{csvLine.openPrice}</td>
+        <td>{csvLine.SMA}</td>
+        <td>{csvLine.change + " %"}</td>
+      </tr>
+    ));
+
+    return (
+      <div className="result">
+        <h1>Open price change from 5 previous days sma</h1>
+        <h1>Sorted by price % change</h1>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Open price</th>
+              <th>SMA 5 days</th>
+              <th>Open change from sma</th>
+            </tr>
+          </thead>
+          <tbody>{renderedData}</tbody>
+        </Table>
+      </div>
+    );
   }
 }

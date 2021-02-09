@@ -42,10 +42,13 @@ export default class App extends Component {
     if (this.state.data === null) {
       return (
         <div className="frontPage">
+
           <p>Please import CSV file, below link to download example file</p>
+
           <a href="https://www.nasdaq.com/api/v1/historical/AAPL/stocks/2020-01-20/2021-01-20">
             https://www.nasdaq.com/api/v1/historical/AAPL/stocks/2020-01-20/2021-01-20
           </a>
+          
           <FileReader handleLocalFile={this.handleLocalFile} />
         </div>
       );

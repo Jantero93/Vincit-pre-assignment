@@ -16,6 +16,8 @@ export default class Exercise extends Component {
 
     this.state = {
       selectedOption: null,
+      startDate: null,
+      endDate: null
     };
   }
 
@@ -35,6 +37,24 @@ export default class Exercise extends Component {
     let date = new Date(event.target.value);
     date.setHours(date.getHours() - 2);
     this.setState({ endDate: date });
+  }
+
+  validDataAndDates(){
+
+    //selected dates, proper data
+    if (this.state.startDate !== null && this.state.endDate !== null && this.props.data !== undefined) {
+      //data range valid
+      if (this.state.startDate <= this.state.endDate)
+      {
+        return true;
+      }
+
+    } 
+
+
+    return false;
+
+    
   }
 
   renderSwitch() {
@@ -127,6 +147,7 @@ export default class Exercise extends Component {
         </div>
 
         <div className="radioButtons">
+
           <label>Whole file as it is</label>
           <input
             type="radio"
@@ -135,6 +156,7 @@ export default class Exercise extends Component {
             checked={this.state.selectedOption === "unedited"}
           />
           <br></br>
+
           <label>Upward trend</label>
           <input
             type="radio"
@@ -143,6 +165,7 @@ export default class Exercise extends Component {
             checked={this.state.selectedOption === "First"}
           />
           <br></br>
+
           <label>Highest trading volume </label>
           <input
             type="radio"
@@ -151,6 +174,7 @@ export default class Exercise extends Component {
             checked={this.state.selectedOption === "Second_A"}
           />
           <br></br>
+
           <label>Highest price change</label>
           <input
             type="radio"
@@ -159,6 +183,7 @@ export default class Exercise extends Component {
             checked={this.state.selectedOption === "Second_B"}
           />
           <br></br>
+          
           <label>Open price compared 5 sma</label>
           <input
             type="radio"
@@ -170,11 +195,11 @@ export default class Exercise extends Component {
 
         <div className="results">
           {
-            //check date range
-            this.state.startDate <= this.state.endDate ? (
+            // dont render components on invalid data or dates
+            this.validDataAndDates() ? (
               this.renderSwitch(this.state.selectedOption)
             ) : (
-              <div className="invalidDate">Invalid data range</div>
+              <div className="invalidDate">Invalid data range or no data</div>
             )
           }
         </div>

@@ -43,47 +43,39 @@ export default class HighestTradingVolume extends Component {
   }
 
   render() {
-    if (
-      this.props.endDate !== null &&
-      this.props.startDate !== null &&
-      this.props.data !== null
-    ) {
-      const data = this.highestTradingVolume();
+    const data = this.highestTradingVolume();
 
-      if (data === -1) {
-        return <div className="upwardTrend">No data in date range</div>;
-      }
-
-      //  console.log("data renderissä ", data);
-      const renderedData = data.map((csvLine, index) => (
-        <tr key={index}>
-          <td>{csvLine.date}</td>
-          <td>{csvLine.volume}</td>
-          <td>{csvLine.high}</td>
-          <td>{csvLine.low}</td>
-          <td>{csvLine.priceChange}</td>
-        </tr>
-      ));
-
-      return (
-        <div className="result">
-          <h1>Sorted by trading volume</h1>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Trade Volume</th>
-                <th>High</th>
-                <th>Low</th>
-                <th>Days change</th>
-              </tr>
-            </thead>
-            <tbody>{renderedData}</tbody>
-          </Table>
-        </div>
-      );
-    } else {
-      return <div></div>;
+    if (data === -1) {
+      return <div className="upwardTrend">No data in date range</div>;
     }
+
+    //  console.log("data renderissä ", data);
+    const renderedData = data.map((csvLine, index) => (
+      <tr key={index}>
+        <td>{csvLine.date}</td>
+        <td>{csvLine.volume}</td>
+        <td>{csvLine.high}</td>
+        <td>{csvLine.low}</td>
+        <td>{csvLine.priceChange}</td>
+      </tr>
+    ));
+
+    return (
+      <div className="result">
+        <h1>Sorted by trading volume</h1>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Trade Volume</th>
+              <th>High</th>
+              <th>Low</th>
+              <th>Days change</th>
+            </tr>
+          </thead>
+          <tbody>{renderedData}</tbody>
+        </Table>
+      </div>
+    );
   }
 }

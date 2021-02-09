@@ -32,7 +32,7 @@ export default class HighestPriceChange extends Component {
       return difDayB - difDayA;
     });
 
-    //map to data contain only date, volume and price change
+    //map to data to object array
     const renderLines = data.map(function (dataLine) {
       return {
         date: dataLine.Date.toLocaleDateString("en-US"),
@@ -48,46 +48,39 @@ export default class HighestPriceChange extends Component {
   }
 
   render() {
-    if (
-      this.props.endDate !== null &&
-      this.props.startDate !== null &&
-      this.props.data !== null
-    ) {
-      const data = this.highestStockPriceChange();
+    const data = this.highestStockPriceChange();
 
-      if (data === -1) {
-        return <div className="upwardTrend">No data in date range</div>;
-      }
-
-      const renderedData = data.map((csvLine, index) => (
-        <tr key={index}>
-          <td>{csvLine.date}</td>
-          <td>{csvLine.volume}</td>
-          <td>{csvLine.high}</td>
-          <td>{csvLine.low}</td>
-          <td>{csvLine.priceChange}</td>
-        </tr>
-      ));
-
-      return (
-        <div className="result">
-          <h1>Sorted by price change</h1>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Trade Volume</th>
-                <th>High</th>
-                <th>Low</th>
-                <th>Days price</th>
-              </tr>
-            </thead>
-            <tbody>{renderedData}</tbody>
-          </Table>
-        </div>
-      );
-    } else {
-      return <div></div>;
+    // not mapable data
+    if (data === -1) {
+      return <div className="upwardTrend">No data in date range</div>;
     }
+
+    const renderedData = data.map((csvLine, index) => (
+      <tr key={index}>
+        <td>{csvLine.date}</td>
+        <td>{csvLine.volume}</td>
+        <td>{csvLine.high}</td>
+        <td>{csvLine.low}</td>
+        <td>{csvLine.priceChange}</td>
+      </tr>
+    ));
+
+    return (
+      <div className="result">
+        <h1>Sorted by price change</h1>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Trade Volume</th>
+              <th>High</th>
+              <th>Low</th>
+              <th>Days price</th>
+            </tr>
+          </thead>
+          <tbody>{renderedData}</tbody>
+        </Table>
+      </div>
+    );
   }
 }

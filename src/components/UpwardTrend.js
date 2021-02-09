@@ -74,37 +74,30 @@ export default class UpwardTrend extends Component {
     return functionResult;
   }
 
-  render() {
-    //render only on proper props
-    if (
-      this.props.endDate !== null &&
-      this.props.startDate !== null &&
-      this.props.data !== null
-    ) {
-      const data = this.upwardTrend();
+  render() {    
+    const data = this.upwardTrend();
 
-      if (data === -1) {
-        return (
-          <div className="upwardTrend">
-            No data in date range or only one day or no increase between days
-          </div>
-        );
-      }
-
+    // no real data to return
+    if (data === -1) {
       return (
         <div className="upwardTrend">
-          <p className="streakResult">
-            {TEXT_ONE +
-              data.streakLength +
-              TEXT_TWO +
-              data.startingDate +
-              TEXT_THREE +
-              data.endingDate}{" "}
-          </p>
+          No data in date range, or contain only one day, or no increase between
+          days
         </div>
       );
-    } else {
-      return <div></div>;
     }
+
+    return (
+      <div className="upwardTrend">
+        <p className="streakResult">
+          {TEXT_ONE +
+            data.streakLength +
+            TEXT_TWO +
+            data.startingDate +
+            TEXT_THREE +
+            data.endingDate}{" "}
+        </p>
+      </div>
+    );
   }
 }

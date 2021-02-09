@@ -19,6 +19,8 @@ export default class MovingAverage extends Component {
     var current = i + 1;
     var overLastIndex = i + 6;
 
+    // get next five elements (or less if there are not enough elements)
+    // break after five or end of array
     while (true) {
       if (current >= allData.length || current === overLastIndex) {
         break;

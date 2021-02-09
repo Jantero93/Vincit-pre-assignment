@@ -12,6 +12,7 @@ export default class HighestTradingVolume extends Component {
   componentDidUpdate(prevProps) {}
 
   highestTradingVolume() {
+    //filter data from outside date range
     const data = this.props.data.filter(
       (csvLine) =>
         csvLine.Date >= this.props.startDate &&
@@ -45,6 +46,7 @@ export default class HighestTradingVolume extends Component {
   render() {
     const data = this.highestTradingVolume();
 
+    // no data to map
     if (data === -1) {
       return <div className="upwardTrend">No data in date range</div>;
     }

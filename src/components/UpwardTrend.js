@@ -19,6 +19,7 @@ export default class UpwardTrend extends Component {
   }
 
   upwardTrend() {
+    // slice data out side date range
     var result = this.props.data.filter(
       (dataLine) =>
         dataLine.Date >= this.props.startDate &&
@@ -35,7 +36,7 @@ export default class UpwardTrend extends Component {
 
     // comparing to next element, no need check last one
     var IndexEndOfStreak; // index where is last included day on streak
-    var biggestStreak = 0; // variabe
+    var biggestStreak = 0; // store length of the biggest streak
     var currentStreak = 0; // after first compare -> two days row
 
     for (var i = 0; i < result.length - 1; i++) {
@@ -46,7 +47,7 @@ export default class UpwardTrend extends Component {
 
         if (currentStreak > biggestStreak) {
           biggestStreak = currentStreak;
-          //comparing to next one
+          //comparing to next one so +1. Element end of streak
           IndexEndOfStreak = i + 1;
         }
       } else {
@@ -54,7 +55,7 @@ export default class UpwardTrend extends Component {
       }
     }
 
-    //if there wasnt rise between days, return -1
+    //if there wasn't increase between days, return -1
     if (biggestStreak === 0) {
       return -1;
     }
@@ -66,7 +67,7 @@ export default class UpwardTrend extends Component {
     dateStart = dateStart.toLocaleDateString("en-US");
 
     const functionResult = {
-      streakLength: (biggestStreak + 1).toString(),
+      streakLength: (biggestStreak + 1).toString(), // biggest streak doesnt include first day
       startingDate: dateStart,
       endingDate: dateEnd,
     };

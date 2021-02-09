@@ -13,6 +13,10 @@ export default class HighestTradingVolume extends Component {
 
   highestTradingVolume() {
     //filter data from outside date range
+
+    console.log(this.props.data)
+    console.log(this.props.startDate)
+
     const data = this.props.data.filter(
       (csvLine) =>
         csvLine.Date >= this.props.startDate &&
@@ -72,7 +76,7 @@ export default class HighestTradingVolume extends Component {
               <th>Trade Volume</th>
               <th>High</th>
               <th>Low</th>
-              <th>Days change</th>
+              <th>High - Low</th>
             </tr>
           </thead>
           <tbody>{renderedData}</tbody>

@@ -6,6 +6,7 @@ export default class HighestPriceChange extends Component {
   constructor(props) {
     super(props);
     this.highestStockPriceChange = this.highestStockPriceChange.bind(this);
+    console.log("moroaaaaaa")
   }
 
   componentDidUpdate(prevProps) {
@@ -19,7 +20,7 @@ export default class HighestPriceChange extends Component {
         csvLine.Date >= this.props.startDate &&
         csvLine.Date <= this.props.endDate
     );
-
+    
     // no data, return error
     if (data.length <= 0) {
       return -1;
@@ -55,6 +56,7 @@ export default class HighestPriceChange extends Component {
       return <div className="upwardTrend">No data in date range</div>;
     }
 
+    
     const renderedData = data.map((csvLine, index) => (
       <tr key={index}>
         <td>{csvLine.date}</td>
@@ -64,7 +66,7 @@ export default class HighestPriceChange extends Component {
         <td>{csvLine.priceChange}</td>
       </tr>
     ));
-
+    console.log("rem",renderedData);
     return (
       <div className="result">
         <h1>Sorted by price change</h1>

@@ -29,7 +29,10 @@ export default class App extends Component {
   formatData(results) {
     //make Date objects and format strings
     for (const csvLine of results.data) {
-      csvLine.Date = new Date(csvLine.Date);
+      // reset hours so can compare with user parameters
+      let oldDate = new Date(csvLine.Date);
+      oldDate = oldDate.setHours(0,0,0,0);
+      csvLine.Date = new Date(oldDate)
       csvLine.High = csvLine.High.replace("$", "");
       csvLine.Low = csvLine.Low.replace("$", "");
       csvLine.Open = csvLine.Open.replace("$", "");

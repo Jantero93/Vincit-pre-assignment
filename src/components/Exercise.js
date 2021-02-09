@@ -10,6 +10,7 @@ export default class Exercise extends Component {
   constructor(props) {
     super(props);
 
+    console.log(this.props.data)
     this.onValueChange = this.onValueChange.bind(this);
     this.startDateChangeHandler = this.startDateChangeHandler.bind(this);
     this.endDateChangeHandler = this.endDateChangeHandler.bind(this);
@@ -26,35 +27,35 @@ export default class Exercise extends Component {
     this.setState({ selectedOption: event.target.value });
   }
 
-  //change date objects to equal csv's objects
-  startDateChangeHandler(event) {
-    let date = new Date(event.target.value);
-    date.setHours(date.getHours() - 2);
+  startDateChangeHandler(event) {    
+    let date = new Date(event.target.value)    
+    //reset time for comparing with csv date objects
+    date.setHours(0,0,0,0)
     this.setState({ startDate: date });
   }
 
   endDateChangeHandler(event) {
-    let date = new Date(event.target.value);
-    date.setHours(date.getHours() - 2);
+    let date = new Date(event.target.value)
+    //reset time for comparing with csv date objects
+    date.setHours(0,0,0,0)
     this.setState({ endDate: date });
   }
 
   validDataAndDates(){
-
     //selected dates, proper data
-    if (this.state.startDate !== null && this.state.endDate !== null && this.props.data !== undefined) {
+    if (
+      this.state.startDate !== null &&
+      this.state.endDate !== null &&
+      this.props.data !== undefined
+    ) {
       //data range valid
-      if (this.state.startDate <= this.state.endDate)
-      {
+      console.log("vrt",this.state.startDate <= this.state.endDate)
+      if (this.state.startDate <= this.state.endDate) {
         return true;
       }
-
-    } 
-
+    }
 
     return false;
-
-    
   }
 
   renderSwitch() {
@@ -183,7 +184,7 @@ export default class Exercise extends Component {
             checked={this.state.selectedOption === "Second_B"}
           />
           <br></br>
-          
+
           <label>Open price compared 5 sma</label>
           <input
             type="radio"
@@ -196,6 +197,7 @@ export default class Exercise extends Component {
         <div className="results">
           {
             // dont render components on invalid data or dates
+            
             this.validDataAndDates() ? (
               this.renderSwitch(this.state.selectedOption)
             ) : (
